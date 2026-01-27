@@ -1,0 +1,164 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #000000;
+  color: #ddd;
+  margin: 0;
+}
+
+header {
+  background-color: #121212;
+  text-align: center;
+  padding: 20px;
+  color: white;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin: 0 15px;
+  font-weight: bold;
+}
+
+nav a:hover {
+  color: #00aaff;
+}
+
+.upload-page {
+  max-width: 600px;
+  margin: 40px auto;
+  background-color: #1a1a1a;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.upload-page label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.upload-page input,
+.upload-page textarea {
+  width: 100%;
+  margin-top: 5px;
+  background-color: #0f0f0f;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 10px;
+  color: white;
+}
+
+.upload-page button {
+  margin-top: 15px;
+  width: 100%;
+  background-color: #007aff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.upload-page button:hover {
+  background-color: #005fc7;
+}
+
+.packs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+  padding: 40px;
+}
+
+.pack {
+  background-color: #1a1a1a;
+  border-radius: 10px;
+  width: 220px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  transition: 0.3s;
+  overflow: hidden;
+}
+
+.pack:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.pack img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.pack h3 {
+  color: #fff;
+  font-size: 16px;
+  margin: 10px 0 5px 0;
+}
+
+.pack p {
+  color: #999;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.download-btn {
+  display: inline-block;
+  background-color: #e60023;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 14px;
+  margin-bottom: 20px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.download-btn:hover {
+  background-color: #b8001c;
+}
+
+.descarga-info {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.descarga-info img.descarga-img {
+  width: 200px;
+  border-radius: 10px;
+  margin: 20px 0;
+}
+
+.yt-section {
+  margin: 20px 0;
+}
+
+.yt-btn {
+  display: inline-block;
+  background-color: #ff0000;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.yt-btn:hover {
+  background-color: #cc0000;
+}
+
+footer {
+  background-color: #121212;
+  text-align: center;
+  padding: 10px;
+  color: #888;
+  font-size: 14px;
+}
+
