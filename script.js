@@ -60,25 +60,32 @@ function cargarPacks() {
 function mostrarPackIndividual() {
   const id = new URLSearchParams(window.location.search).get("id");
   const cont = document.getElementById("descarga-info");
+  const relatedCont = document.getElementById("related-packs");
   if (!id || !cont) return;
+
   db.ref("packs/" + id).once("value").then(snapshot => {
     const pack = snapshot.val();
     if (!pack) {
       cont.innerHTML = "<p>No se encontró el pack.</p>";
       return;
     }
+
     cont.innerHTML = `
-      <h2>${pack.nombre}</h2>
-      <img src="${pack.imagen}" alt="${pack.nombre}" style="width:200px;border-radius:10px;margin:20px 0;">
-      <p><strong>Autor:</strong> ${pack.autor}</p>
-      <p><strong>Descripción:</strong> ${pack.descripcion}</p>
-      <a href="${pack.archivo}" download class="download-btn">Descargar</a><br><br>
-      <a href="${pack.youtube}" target="_blank" style="color:#00aaff;">Canal del creador</a>
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <img src="${pack.imagen}" alt="${pack.nombre}" style="width:300px;border-radius:10px;margin:20px 0;">
+        <h2>${pack.nombre}</h2>
+        <p><strong>Autor:</strong> ${pack.autor}</p>
+        <p><strong>Descripción:</strong> ${pack.descripcion}</p>
+        <div style="margin:15px 0;">
+          <a href="${pack.archivo}" download class="download-btn">Descargar</a>
+          <a href="${pack.youtube}" target="_blank" class="download-btn" style="background-color:#00aaff;margin-left:10px;">Canal del creador</a>
+        </div>
+      </div>
     `;
 
     const likeBtn = document.createElement("button");
     likeBtn.className = "download-btn";
-    likeBtn.style.backgroundColor = "#00aaff";
+    likeBtn.style.backgroundColor = "#ff4081";
     likeBtn.textContent = `❤️ ${pack.likes || 0}`;
     likeBtn.addEventListener("click", () => {
       const newLikes = (pack.likes || 0) + 1;
@@ -86,6 +93,31 @@ function mostrarPackIndividual() {
       likeBtn.textContent = `❤️ ${newLikes}`;
     });
     cont.appendChild(likeBtn);
+
+    if (relatedCont) {
+      db.ref("packs").once("value").then(snap => {
+        const allPacks = snap.val() || {};
+        relatedCont.innerHTML = "";
+        for (const otherId in allPacks) {
+          if (otherId === id) continue;
+          const otherPack = allPacks[otherId];
+          if (otherPack.autor === pack.autor) {
+            const div = document.createElement("div");
+            div.className = "pack";
+            div.innerHTML = `
+              <img src="${otherPack.imagen}" alt="${otherPack.nombre}">
+              <h3>${otherPack.nombre}</h3>
+              <p>• By ${otherPack.autor} •</p>
+              <a href="detalle.html?id=${otherId}" class="download-btn">Ver detalle</a>
+            `;
+            relatedCont.appendChild(div);
+          }
+        }
+        if (!relatedCont.hasChildNodes()) {
+          relatedCont.innerHTML = "<p style='text-align:center;color:#777;'>No hay packs relacionados.</p>";
+        }
+      });
+    }
   });
 }
 
