@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Subir Texture Pack</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
@@ -15,36 +14,38 @@
 
   <main>
     <section class="upload-page">
-      <form id="upload-form" enctype="multipart/form-data">
-        <label>Nombre del pack:</label>
-        <input type="text" id="pack-name" required>
+      <form id="upload-form">
+        <label>Nombre:</label>
+        <input type="text" id="pack-name" required />
 
         <label>Autor:</label>
-        <input type="text" id="pack-author" required>
+        <input type="text" id="pack-author" required />
 
         <label>Descripción:</label>
         <textarea id="pack-desc" required></textarea>
 
+        <label>Imagen (URL):</label>
+        <input type="text" id="pack-img" required />
+
+        <label>Archivo (URL o .zip):</label>
+        <input type="text" id="pack-file" required />
+
         <label>Canal de YouTube del autor:</label>
-        <input type="url" id="pack-youtube" placeholder="https://www.youtube.com/@autor" required>
-
-        <label>Imagen del pack (.png o .jpg):</label>
-        <input type="file" id="pack-img" accept="image/png,image/jpeg" required>
-
-        <label>Archivo del pack (.zip o .rar):</label>
-        <input type="file" id="pack-file" accept=".zip,.rar" required>
+        <input type="text" id="pack-yt" placeholder="https://youtube.com/@autor" />
 
         <button type="button" id="upload-confirm">Subir pack</button>
       </form>
     </section>
-
-    <section class="packs" id="packs-list">
-      
-    </section>
   </main>
 
   <footer>
-    <p>© 2026 - Marulys</p>
+    <p>© 2026 - Minepacks by Marulys</p>
   </footer>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+  <script src="script.js"></script>
 </body>
 </html>
