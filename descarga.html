@@ -1,237 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Descargar Pack</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    body {
-      background-color: #0f0f0f;
-      color: #ddd;
-      font-family: Arial, sans-serif;
-      margin: 0;
-    }
-
-    header {
-      background-color: #121212;
-      text-align: center;
-      padding: 20px;
-      color: white;
-    }
-
-    header a {
-      color: #00aaff;
-      text-decoration: none;
-    }
-
-    .descarga-info {
-      text-align: center;
-      margin-top: 40px;
-    }
-
-    .descarga-info img {
-      width: 160px;
-      height: 160px;
-      border-radius: 20px;
-      margin: 20px 0;
-      object-fit: cover;
-      box-shadow: 0 0 10px rgba(0,0,0,0.6);
-    }
-
-    .steps {
-      max-width: 500px;
-      margin: 40px auto;
-      background-color: #181818;
-      border-radius: 12px;
-      padding: 25px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    }
-
-    .step {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin: 20px 0;
-      padding: 14px 16px;
-      border-radius: 10px;
-      background-color: #202020;
-      transition: all 0.4s ease;
-    }
-
-    .step.completed {
-      background-color: #0f3;
-      color: #000;
-      box-shadow: 0 0 12px rgba(0,255,0,0.5);
-      transform: scale(1.01);
-    }
-
-    .step-number {
-      background-color: #007aff;
-      color: white;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-weight: bold;
-      margin-right: 10px;
-      flex-shrink: 0;
-    }
-
-    .step-content {
-      flex: 1;
-      text-align: left;
-    }
-
-    .step-content strong {
-      font-size: 15px;
-    }
-
-    .step-content small {
-      font-size: 12px;
-      color: #aaa;
-    }
-
-    .step button {
-      background-color: #ff0000;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      padding: 7px 14px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .step button:hover {
-      background-color: #cc0000;
-      transform: scale(1.05);
-    }
-
-    .step.completed button {
-      background-color: #00c853;
-      color: white;
-    }
-
-    .download-btn {
-      display: block;
-      margin: 30px auto 0 auto;
-      text-align: center;
-      background-color: #e60023;
-      color: white;
-      border-radius: 8px;
-      padding: 12px 25px;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 17px;
-      transition: 0.3s;
-      width: fit-content;
-    }
-
-    .download-btn:hover {
-      background-color: #b8001c;
-    }
-
-    .download-btn.disabled {
-      opacity: 0.4;
-      pointer-events: none;
-      filter: grayscale(0.6);
-    }
-
-    footer {
-      background-color: #121212;
-      text-align: center;
-      padding: 10px;
-      color: #888;
-      font-size: 14px;
-    }
-  </style>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const params = new URLSearchParams(window.location.search);
-      const id = params.get("id");
-      const packs = JSON.parse(localStorage.getItem("packs_publicados") || "{}");
-      const pack = packs[id];
-      const marulysYT = "https://www.youtube.com/@marulys74";
-      const cont = document.getElementById("descarga-info");
-
-      if (!pack) {
-        cont.innerHTML = "<p>No se encontró el pack.</p>";
-        return;
-      }
-
-      cont.innerHTML = `
-        <h2>${pack.nombre}</h2>
-        <img src="${pack.imagen}" alt="${pack.nombre}">
-        <p>${pack.descripcion}</p>
-
-        <div class="steps">
-          <div class="step" id="step1">
-            <div class="step-number">1</div>
-            <div class="step-content">
-              <strong>Seguir al creador</strong><br>
-              <small>Apoya a ${pack.autor} en su canal</small>
-            </div>
-            <button id="btnAutor">Seguir</button>
-          </div>
-
-          <div class="step" id="step2">
-            <div class="step-number">2</div>
-            <div class="step-content">
-              <strong>Seguir a Marulys</strong><br>
-              <small>Apoya al creador de esta web</small>
-            </div>
-            <button id="btnMarulys">Seguir</button>
-          </div>
-
-          <div class="step" id="step3">
-            <div class="step-number">3</div>
-            <div class="step-content">
-              <strong>Descargar el pack</strong><br>
-              <small>Una vez completados los pasos anteriores</small>
-            </div>
-          </div>
-        </div>
-
-        <a href="${pack.archivo}" download="${pack.filename}" id="downloadBtn" class="download-btn disabled">Descargar</a>
-      `;
-
-      const step1 = document.getElementById("step1");
-      const step2 = document.getElementById("step2");
-      const btnAutor = document.getElementById("btnAutor");
-      const btnMarulys = document.getElementById("btnMarulys");
-      const downloadBtn = document.getElementById("downloadBtn");
-
-      const checkSteps = () => {
-        if (step1.classList.contains("completed") && step2.classList.contains("completed")) {
-          downloadBtn.classList.remove("disabled");
-        }
-      };
-
-      btnAutor.addEventListener("click", () => {
-        window.open(pack.youtube, "_blank");
-        step1.classList.add("completed");
-        btnAutor.textContent = "✔ Seguido";
-        checkSteps();
-      });
-
-      btnMarulys.addEventListener("click", () => {
-        window.open(marulysYT, "_blank");
-        step2.classList.add("completed");
-        btnMarulys.textContent = "✔ Seguido";
-        checkSteps();
-      });
-    });
-  </script>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
   <header>
-    <h1>Descarga del Texture Pack</h1>
-    <a href="index.html">⬅ Volver al inicio</a>
+    <h1>Descargar Texture Pack</h1>
+    <a href="index.html" style="color:#00aaff;">⬅ Volver al inicio</a>
   </header>
 
   <main>
@@ -239,7 +17,13 @@
   </main>
 
   <footer>
-    <p>© 2026 - Marulys</p>
+    <p>© 2026 - Minepacks by Marulys</p>
   </footer>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+  <script src="script.js"></script>
 </body>
 </html>
