@@ -1,11 +1,12 @@
 const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_AUTH_DOMAIN",
-  databaseURL: "TU_DATABASE_URL",
-  projectId: "TU_PROJECT_ID",
-  storageBucket: "TU_STORAGE_BUCKET",
-  messagingSenderId: "TU_SENDER_ID",
-  appId: "TU_APP_ID"
+  apiKey: "AIzaSyBalJE5deMcq6iOpOvLp4yjK0jbIqaLNjs",
+  authDomain: "texturepacks-marulys.firebaseapp.com",
+  databaseURL: "https://texturepacks-marulys-default-rtdb.firebaseio.com",
+  projectId: "texturepacks-marulys",
+  storageBucket: "texturepacks-marulys.firebasestorage.app",
+  messagingSenderId: "1039533435087",
+  appId: "1:1039533435087:web:7d3a38a1bca4800ff86fba",
+  measurementId: "G-S3EVXWZGKR"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -132,7 +133,6 @@ function configurarSubida() {
     const autor = document.getElementById("pack-author").value.trim();
     const descripcion = document.getElementById("pack-desc").value.trim();
     const youtube = document.getElementById("pack-yt").value.trim();
-
     const imgFile = document.getElementById("pack-img-file").files[0];
     const zipFile = document.getElementById("pack-zip-file").files[0];
 
@@ -144,16 +144,12 @@ function configurarSubida() {
     status.textContent = "Subiendo imagen...";
     const imgRef = storage.ref("packs/images/" + Date.now() + "_" + imgFile.name);
     imgRef.put(imgFile).then(snapshot => snapshot.ref.getDownloadURL()).then(imgURL => {
-
       status.textContent = "Subiendo archivo...";
       const zipRef = storage.ref("packs/files/" + Date.now() + "_" + zipFile.name);
       zipRef.put(zipFile).then(snap => snap.ref.getDownloadURL()).then(zipURL => {
-
         const packData = { nombre, autor, descripcion, imagen: imgURL, archivo: zipURL, youtube, likes: 0 };
         guardarPack(packData);
-
       }).catch(err => alert("❌ Error subiendo archivo: " + err.message));
-
     }).catch(err => alert("❌ Error subiendo imagen: " + err.message));
   });
 }
