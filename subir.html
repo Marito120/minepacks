@@ -24,17 +24,18 @@
         <label>Descripción:</label>
         <textarea id="pack-desc" required></textarea>
 
-        <label>Imagen (URL):</label>
-        <input type="text" id="pack-img" required />
+        <label>Imagen:</label>
+        <input type="file" id="pack-img-file" accept="image/*" required />
 
-        <label>Archivo (URL o .zip):</label>
-        <input type="text" id="pack-file" required />
+        <label>Archivo (.zip):</label>
+        <input type="file" id="pack-zip-file" accept=".zip" required />
 
         <label>Canal de YouTube del autor:</label>
         <input type="text" id="pack-yt" placeholder="https://youtube.com/@autor" />
 
         <button type="button" id="upload-confirm">Subir pack</button>
       </form>
+      <p id="upload-status" style="text-align:center;color:#00aaff;margin-top:15px;"></p>
     </section>
   </main>
 
@@ -44,7 +45,7 @@
 
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
