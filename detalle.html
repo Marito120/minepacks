@@ -3,32 +3,28 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Detalles del Pack</title>
+  <title>Detalle del Pack</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="script.js" defer></script>
 </head>
 <body>
   <header>
-    <h1 id="pack-nombre">Cargando...</h1>
-    <a href="index.html" class="volver">⬅ Volver</a>
+    <h1>Detalle del Texture Pack</h1>
+    <a href="index.html" style="color:#00aaff;">⬅ Volver al inicio</a>
   </header>
 
-  <main class="detalle-page">
-    <div class="detalle-inner">
-      <div class="detalle-imgwrap">
-        <img id="pack-img" src="" alt="Imagen del pack" />
-      </div>
-
-      <div class="detalle-body">
-        <p id="pack-autor" class="autor"></p>
-        <p id="pack-desc" class="desc"></p>
-        <a id="pack-download" class="download-btn" href="#" download>Descargar Pack</a>
-      </div>
-    </div>
+  <main>
+    <section id="descarga-info" class="descarga-info">
+      <p style="color:#777; text-align:center; margin-top:30px;">Cargando detalles...</p>
+    </section>
   </main>
 
   <footer>
-    <p>© 2026 - Marulys</p>
+    <p>© 2026 - Minepacks by Marulys</p>
   </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+  <script src="script.js"></script>
 </body>
 </html>
