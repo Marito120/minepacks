@@ -42,7 +42,7 @@ nav a:hover {
 }
 
 .pack:hover {
-  transform: translateY(-5px);
+  transform: translateY(-5px) scale(1.03);
   box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
@@ -75,6 +75,7 @@ nav a:hover {
   margin-bottom: 20px;
   text-decoration: none;
   transition: 0.3s;
+  cursor: pointer;
 }
 
 .download-btn:hover {
@@ -87,4 +88,91 @@ footer {
   padding: 10px;
   color: #888;
   font-size: 14px;
+}
+
+.upload-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 40px 20px;
+}
+
+#upload-form {
+  background-color: #1a1a1a;
+  padding: 30px 40px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  width: 100%;
+  max-width: 420px;
+  color: #fff;
+}
+
+#upload-form label {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #00aaff;
+  font-size: 14px;
+}
+
+#upload-form input,
+#upload-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background-color: #0f0f0f;
+  color: #ddd;
+  font-size: 14px;
+  outline: none;
+  resize: none;
+}
+
+#upload-form textarea {
+  min-height: 80px;
+}
+
+#upload-form input:focus,
+#upload-form textarea:focus {
+  border: 1px solid #00aaff;
+  background-color: #141414;
+}
+
+#upload-confirm {
+  width: 100%;
+  margin-top: 25px;
+  background-color: #e60023;
+  border: none;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#upload-confirm:hover {
+  background-color: #b8001c;
+  transform: scale(1.03);
+}
+
+#upload-form input::placeholder {
+  color: #777;
+  font-style: italic;
+}
+
+.search-bar {
+  display: block;
+  margin: 30px auto 10px;
+  width: 80%;
+  max-width: 400px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background-color: #1a1a1a;
+  color: #ddd;
+  text-align: center;
 }
