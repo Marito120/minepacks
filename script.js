@@ -3,7 +3,7 @@ const firebaseConfig = {
   authDomain: "texturepacks-marulys.firebaseapp.com",
   databaseURL: "https://texturepacks-marulys-default-rtdb.firebaseio.com",
   projectId: "texturepacks-marulys",
-  storageBucket: "texturepacks-marulys.firebasestorage.app",
+  storageBucket: "texturepacks-marulys.appspot.com",
   messagingSenderId: "1039533435087",
   appId: "1:1039533435087:web:7d3a38a1bca4800ff86fba",
   measurementId: "G-S3EVXWZGKR"
@@ -11,7 +11,6 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-const storage = firebase.storage();
 
 function guardarPack(packData) {
   const id = Date.now();
@@ -125,32 +124,52 @@ function mostrarPackIndividual() {
 
 function configurarSubida() {
   const subirBtn = document.getElementById("upload-confirm");
+  const imgBtn = document.getElementById("upload-img-btn");
+  const zipBtn = document.getElementById("upload-zip-btn");
+  const imgUrlP = document.getElementById("img-url");
+  const zipUrlP = document.getElementById("zip-url");
   const status = document.getElementById("upload-status");
-  if (!subirBtn) return;
+
+  let imgURL = "";
+  let zipURL = "";
+
+  const uploadOptions = {
+    apiKey: "public_223k2Yf9KbzGVxh6HYTZiMjcQcf1",
+    maxFileCount: 1
+  };
+
+  imgBtn.addEventListener("click", () => {
+    Bytescale.UploadWidget.open(uploadOptions).then(files => {
+      if (files.length > 0) {
+        imgURL = files[0].fileUrl;
+        imgUrlP.textContent = imgURL;
+      }
+    });
+  });
+
+  zipBtn.addEventListener("click", () => {
+    Bytescale.UploadWidget.open(uploadOptions).then(files => {
+      if (files.length > 0) {
+        zipURL = files[0].fileUrl;
+        zipUrlP.textContent = zipURL;
+      }
+    });
+  });
 
   subirBtn.addEventListener("click", () => {
     const nombre = document.getElementById("pack-name").value.trim();
     const autor = document.getElementById("pack-author").value.trim();
     const descripcion = document.getElementById("pack-desc").value.trim();
     const youtube = document.getElementById("pack-yt").value.trim();
-    const imgFile = document.getElementById("pack-img-file").files[0];
-    const zipFile = document.getElementById("pack-zip-file").files[0];
 
-    if (!nombre || !autor || !descripcion || !imgFile || !zipFile) {
-      alert("⚠️ Rellena todos los campos y selecciona archivos.");
+    if (!nombre || !autor || !descripcion || !imgURL || !zipURL) {
+      alert("⚠️ Completa todos los campos y sube los archivos.");
       return;
     }
 
-    status.textContent = "Subiendo imagen...";
-    const imgRef = storage.ref("packs/images/" + Date.now() + "_" + imgFile.name);
-    imgRef.put(imgFile).then(snapshot => snapshot.ref.getDownloadURL()).then(imgURL => {
-      status.textContent = "Subiendo archivo...";
-      const zipRef = storage.ref("packs/files/" + Date.now() + "_" + zipFile.name);
-      zipRef.put(zipFile).then(snap => snap.ref.getDownloadURL()).then(zipURL => {
-        const packData = { nombre, autor, descripcion, imagen: imgURL, archivo: zipURL, youtube, likes: 0 };
-        guardarPack(packData);
-      }).catch(err => alert("❌ Error subiendo archivo: " + err.message));
-    }).catch(err => alert("❌ Error subiendo imagen: " + err.message));
+    status.textContent = "Guardando pack...";
+    const packData = { nombre, autor, descripcion, imagen: imgURL, archivo: zipURL, youtube, likes: 0 };
+    guardarPack(packData);
   });
 }
 
