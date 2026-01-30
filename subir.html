@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Subir Texture Pack</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://js.bytescale.com/upload-widget/v4"></script>
 </head>
 <body>
   <header>
@@ -25,10 +26,12 @@
         <textarea id="pack-desc" required></textarea>
 
         <label>Imagen:</label>
-        <input type="file" id="pack-img-file" accept="image/*" required />
+        <button type="button" id="upload-img-btn" class="download-btn" style="background-color:#00aaff;">Subir imagen</button>
+        <p id="img-url" style="font-size:12px;color:#aaa;"></p>
 
         <label>Archivo (.zip):</label>
-        <input type="file" id="pack-zip-file" accept=".zip" required />
+        <button type="button" id="upload-zip-btn" class="download-btn" style="background-color:#00aaff;">Subir archivo ZIP</button>
+        <p id="zip-url" style="font-size:12px;color:#aaa;"></p>
 
         <label>Canal de YouTube del autor:</label>
         <input type="text" id="pack-yt" placeholder="https://youtube.com/@autor" />
@@ -43,9 +46,6 @@
     <p>© 2026 - Minepacks by Marulys</p>
   </footer>
 
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
