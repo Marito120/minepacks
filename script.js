@@ -9,7 +9,7 @@ function configurarSubida() {
   let imgURL = "";
   let zipURL = "";
 
-  // Configuración Upload.io (solo imágenes)
+  // Upload.io (solo imágenes)
   const uploadOptions = {
     apiKey: "public_223k2Yf9KbzGVxh6HYTZiMjcQcf1",
     maxFileCount: 1,
@@ -26,11 +26,11 @@ function configurarSubida() {
     });
   });
 
-  // Subir ZIP (File.io)
+  // Subir ZIP (Transfer.sh)
   zipBtn.addEventListener("click", async () => {
     const input = document.createElement("input");
     input.type = "file";
-    input.accept = ".zip";
+    input.accept = ".zip,.rar,.7z";
     input.click();
 
     input.addEventListener("change", async () => {
@@ -40,22 +40,27 @@ function configurarSubida() {
       formData.append("file", file);
 
       status.textContent = "⏳ Subiendo archivo ZIP...";
-      const res = await fetch("https://file.io/?expires=1y", {
-        method: "POST",
-        body: formData
-      });
-      const data = await res.json();
-      if (data.success) {
-        zipURL = data.link;
-        zipUrlP.textContent = zipURL;
-        status.textContent = "✅ ZIP subido correctamente";
-      } else {
+      try {
+        const res = await fetch(`https://transfer.sh/${file.name}`, {
+          method: "PUT",
+          body: file
+        });
+        const link = await res.text();
+        if (link.startsWith("https://")) {
+          zipURL = link.trim();
+          zipUrlP.textContent = zipURL;
+          status.textContent = "✅ ZIP subido correctamente";
+        } else {
+          throw new Error("No se recibió enlace válido");
+        }
+      } catch (err) {
+        console.error(err);
         status.textContent = "❌ Error al subir el ZIP";
       }
     });
   });
 
-  // Al confirmar subida
+  // Confirmar datos
   subirBtn.addEventListener("click", () => {
     const nombre = document.getElementById("pack-name").value.trim();
     const autor = document.getElementById("pack-author").value.trim();
@@ -75,12 +80,11 @@ function configurarSubida() {
 🖼️ Imagen: ${imgURL}
 📁 Archivo: ${zipURL}
 `;
-    status.textContent = "✅ Pack preparado (guarda estas URLs o añádelas manualmente a tu web)";
+    status.textContent = "✅ Pack preparado (guarda las URLs o añádelas manualmente a tu web)";
     alert(info);
     console.log(info);
   });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  if (document.getElementById("upload-confirm")) configurarSubida();
-});
+
