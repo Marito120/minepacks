@@ -9,39 +9,39 @@ function configurarSubida() {
   let imgURL = "";
   let zipURL = "";
 
+  // Subir imagen o ZIP a file.io
   async function subirArchivo(tipo) {
     const input = document.createElement("input");
     input.type = "file";
-    if (tipo === "imagen") {
-      input.accept = "image/png,image/jpeg,image/webp,image/gif";
-    } else {
-      input.accept = ".zip,.rar,.7z";
-    }
+    if (tipo === "imagen") input.accept = "image/png,image/jpeg,image/webp,image/gif";
+    else input.accept = ".zip,.rar,.7z";
     input.click();
 
     input.addEventListener("change", async () => {
       const file = input.files[0];
       if (!file) return;
+      const formData = new FormData();
+      formData.append("file", file);
 
       status.textContent = `⏳ Subiendo ${file.name}...`;
       try {
-        const res = await fetch(`https://transfer.sh/${file.name}`, {
-          method: "PUT",
-          body: file
+        const res = await fetch("https://file.io", {
+          method: "POST",
+          body: formData
         });
-        const link = await res.text();
-
-        if (!link.startsWith("https://")) throw new Error("falló la subida");
-
-        if (tipo === "imagen") {
-          imgURL = link.trim();
-          imgUrlP.textContent = imgURL;
+        const data = await res.json();
+        if (data.success && data.link) {
+          if (tipo === "imagen") {
+            imgURL = data.link;
+            imgUrlP.textContent = imgURL;
+          } else {
+            zipURL = data.link;
+            zipUrlP.textContent = zipURL;
+          }
+          status.textContent = `✅ ${file.name} subido correctamente`;
         } else {
-          zipURL = link.trim();
-          zipUrlP.textContent = zipURL;
+          throw new Error("No se recibió link válido");
         }
-
-        status.textContent = `✅ ${file.name} subido correctamente`;
       } catch (err) {
         console.error(err);
         status.textContent = `❌ Error al subir ${file.name}`;
