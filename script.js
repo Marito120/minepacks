@@ -80,3 +80,6 @@ function configurarSubida() {
 document.addEventListener("DOMContentLoaded", () => {
   if (document.getElementById("upload-confirm")) configurarSubida();
 });
+const SUPABASE_URL = "https://tkqukzqwhciycdfmitzp.supabase.co";
+const SUPABASE_KEY = "sb_publishable_3lqIlhhgmwLT85e0Szp-AQ_7oMyhdg1";
+
