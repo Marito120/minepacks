@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Subir Texture Pack</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://js.bytescale.com/upload-widget/v4"></script>
 </head>
 <body>
   <header>
@@ -26,18 +25,23 @@
         <textarea id="pack-desc" required></textarea>
 
         <label>Imagen:</label>
-        <button type="button" id="upload-img-btn" class="download-btn" style="background-color:#00aaff;">Subir imagen</button>
-        <p id="img-url" style="font-size:12px;color:#aaa;"></p>
+        <button type="button" id="upload-img-btn" class="download-btn" style="background-color:#00aaff;">
+          Subir imagen
+        </button>
+        <p id="img-url" style="font-size:12px;color:#aaa;word-break:break-all;"></p>
 
         <label>Archivo (.zip):</label>
-        <button type="button" id="upload-zip-btn" class="download-btn" style="background-color:#00aaff;">Subir archivo ZIP</button>
-        <p id="zip-url" style="font-size:12px;color:#aaa;"></p>
+        <button type="button" id="upload-zip-btn" class="download-btn" style="background-color:#00aaff;">
+          Subir archivo ZIP
+        </button>
+        <p id="zip-url" style="font-size:12px;color:#aaa;word-break:break-all;"></p>
 
         <label>Canal de YouTube del autor:</label>
         <input type="text" id="pack-yt" placeholder="https://youtube.com/@autor" />
 
         <button type="button" id="upload-confirm">Subir pack</button>
       </form>
+
       <p id="upload-status" style="text-align:center;color:#00aaff;margin-top:15px;"></p>
     </section>
   </main>
