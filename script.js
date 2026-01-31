@@ -9,58 +9,49 @@ function configurarSubida() {
   let imgURL = "";
   let zipURL = "";
 
-  // Upload.io (solo imágenes)
-  const uploadOptions = {
-    apiKey: "public_223k2Yf9KbzGVxh6HYTZiMjcQcf1",
-    maxFileCount: 1,
-    mimeTypes: ["image/jpeg", "image/png", "image/webp", "image/gif"]
-  };
-
-  // Subir imagen (Upload.io)
-  imgBtn.addEventListener("click", () => {
-    Bytescale.UploadWidget.open(uploadOptions).then(files => {
-      if (files.length > 0) {
-        imgURL = files[0].fileUrl;
-        imgUrlP.textContent = imgURL;
-      }
-    });
-  });
-
-  // Subir ZIP (Transfer.sh)
-  zipBtn.addEventListener("click", async () => {
+  async function subirArchivo(tipo) {
     const input = document.createElement("input");
     input.type = "file";
-    input.accept = ".zip,.rar,.7z";
+    if (tipo === "imagen") {
+      input.accept = "image/png,image/jpeg,image/webp,image/gif";
+    } else {
+      input.accept = ".zip,.rar,.7z";
+    }
     input.click();
 
     input.addEventListener("change", async () => {
       const file = input.files[0];
       if (!file) return;
-      const formData = new FormData();
-      formData.append("file", file);
 
-      status.textContent = "⏳ Subiendo archivo ZIP...";
+      status.textContent = `⏳ Subiendo ${file.name}...`;
       try {
         const res = await fetch(`https://transfer.sh/${file.name}`, {
           method: "PUT",
           body: file
         });
         const link = await res.text();
-        if (link.startsWith("https://")) {
+
+        if (!link.startsWith("https://")) throw new Error("falló la subida");
+
+        if (tipo === "imagen") {
+          imgURL = link.trim();
+          imgUrlP.textContent = imgURL;
+        } else {
           zipURL = link.trim();
           zipUrlP.textContent = zipURL;
-          status.textContent = "✅ ZIP subido correctamente";
-        } else {
-          throw new Error("No se recibió enlace válido");
         }
+
+        status.textContent = `✅ ${file.name} subido correctamente`;
       } catch (err) {
         console.error(err);
-        status.textContent = "❌ Error al subir el ZIP";
+        status.textContent = `❌ Error al subir ${file.name}`;
       }
     });
-  });
+  }
 
-  // Confirmar datos
+  imgBtn.addEventListener("click", () => subirArchivo("imagen"));
+  zipBtn.addEventListener("click", () => subirArchivo("zip"));
+
   subirBtn.addEventListener("click", () => {
     const nombre = document.getElementById("pack-name").value.trim();
     const autor = document.getElementById("pack-author").value.trim();
@@ -80,11 +71,12 @@ function configurarSubida() {
 🖼️ Imagen: ${imgURL}
 📁 Archivo: ${zipURL}
 `;
-    status.textContent = "✅ Pack preparado (guarda las URLs o añádelas manualmente a tu web)";
+    status.textContent = "✅ Pack preparado. Guarda las URLs o añádelas a tu web.";
     alert(info);
     console.log(info);
   });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-
+  if (document.getElementById("upload-confirm")) configurarSubida();
+});
