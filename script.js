@@ -9,11 +9,14 @@ function configurarSubida() {
   let imgURL = "";
   let zipURL = "";
 
+  // Configuración Upload.io (solo imágenes)
   const uploadOptions = {
     apiKey: "public_223k2Yf9KbzGVxh6HYTZiMjcQcf1",
-    maxFileCount: 1
+    maxFileCount: 1,
+    mimeTypes: ["image/jpeg", "image/png", "image/webp", "image/gif"]
   };
 
+  // Subir imagen (Upload.io)
   imgBtn.addEventListener("click", () => {
     Bytescale.UploadWidget.open(uploadOptions).then(files => {
       if (files.length > 0) {
@@ -23,15 +26,36 @@ function configurarSubida() {
     });
   });
 
-  zipBtn.addEventListener("click", () => {
-    Bytescale.UploadWidget.open(uploadOptions).then(files => {
-      if (files.length > 0) {
-        zipURL = files[0].fileUrl;
+  // Subir ZIP (File.io)
+  zipBtn.addEventListener("click", async () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".zip";
+    input.click();
+
+    input.addEventListener("change", async () => {
+      const file = input.files[0];
+      if (!file) return;
+      const formData = new FormData();
+      formData.append("file", file);
+
+      status.textContent = "⏳ Subiendo archivo ZIP...";
+      const res = await fetch("https://file.io/?expires=1y", {
+        method: "POST",
+        body: formData
+      });
+      const data = await res.json();
+      if (data.success) {
+        zipURL = data.link;
         zipUrlP.textContent = zipURL;
+        status.textContent = "✅ ZIP subido correctamente";
+      } else {
+        status.textContent = "❌ Error al subir el ZIP";
       }
     });
   });
 
+  // Al confirmar subida
   subirBtn.addEventListener("click", () => {
     const nombre = document.getElementById("pack-name").value.trim();
     const autor = document.getElementById("pack-author").value.trim();
@@ -60,4 +84,3 @@ function configurarSubida() {
 document.addEventListener("DOMContentLoaded", () => {
   if (document.getElementById("upload-confirm")) configurarSubida();
 });
-
