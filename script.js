@@ -1,3 +1,29 @@
+// 🟢 CONFIGURACIÓN SUPABASE
+const SUPABASE_URL = "https://tkqukzqwhciycdfmitzp.supabase.co";
+const SUPABASE_KEY = "sb_publishable_3lqIlhhgmwLT85e0Szp-AQ_7oMyhdg1";
+const BUCKET_NAME = "packs";
+
+// 🚀 Subir archivo a Supabase Storage
+async function subirArchivo(file) {
+  const filePath = `${Date.now()}-${file.name}`;
+  const res = await fetch(`${SUPABASE_URL}storage/v1/object/${BUCKET_NAME}/${filePath}`, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${SUPABASE_KEY}`,
+      "Content-Type": file.type
+    },
+    body: file
+  });
+
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(`Error al subir: ${errorText}`);
+  }
+
+  // Devuelve la URL pública del archivo
+  return `${SUPABASE_URL}storage/v1/object/public/${BUCKET_NAME}/${filePath}`;
+}
+
 function configurarSubida() {
   const imgBtn = document.getElementById("upload-img-btn");
   const zipBtn = document.getElementById("upload-zip-btn");
@@ -9,8 +35,8 @@ function configurarSubida() {
   let imgURL = "";
   let zipURL = "";
 
-  // Subir imagen o ZIP a file.io
-  async function subirArchivo(tipo) {
+  // Función para seleccionar archivo y subirlo
+  async function seleccionarYSubir(tipo) {
     const input = document.createElement("input");
     input.type = "file";
     if (tipo === "imagen") input.accept = "image/png,image/jpeg,image/webp,image/gif";
@@ -20,28 +46,18 @@ function configurarSubida() {
     input.addEventListener("change", async () => {
       const file = input.files[0];
       if (!file) return;
-      const formData = new FormData();
-      formData.append("file", file);
 
       status.textContent = `⏳ Subiendo ${file.name}...`;
       try {
-        const res = await fetch("https://file.io", {
-          method: "POST",
-          body: formData
-        });
-        const data = await res.json();
-        if (data.success && data.link) {
-          if (tipo === "imagen") {
-            imgURL = data.link;
-            imgUrlP.textContent = imgURL;
-          } else {
-            zipURL = data.link;
-            zipUrlP.textContent = zipURL;
-          }
-          status.textContent = `✅ ${file.name} subido correctamente`;
+        const link = await subirArchivo(file);
+        if (tipo === "imagen") {
+          imgURL = link;
+          imgUrlP.textContent = imgURL;
         } else {
-          throw new Error("No se recibió link válido");
+          zipURL = link;
+          zipUrlP.textContent = zipURL;
         }
+        status.textContent = `✅ ${file.name} subido correctamente`;
       } catch (err) {
         console.error(err);
         status.textContent = `❌ Error al subir ${file.name}`;
@@ -49,8 +65,8 @@ function configurarSubida() {
     });
   }
 
-  imgBtn.addEventListener("click", () => subirArchivo("imagen"));
-  zipBtn.addEventListener("click", () => subirArchivo("zip"));
+  imgBtn.addEventListener("click", () => seleccionarYSubir("imagen"));
+  zipBtn.addEventListener("click", () => seleccionarYSubir("zip"));
 
   subirBtn.addEventListener("click", () => {
     const nombre = document.getElementById("pack-name").value.trim();
@@ -77,9 +93,4 @@ function configurarSubida() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  if (document.getElementById("upload-confirm")) configurarSubida();
-});
-const SUPABASE_URL = "https://tkqukzqwhciycdfmitzp.supabase.co";
-const SUPABASE_KEY = "sb_publishable_3lqIlhhgmwLT85e0Szp-AQ_7oMyhdg1";
-
+document.addEventListener("DOMContentLoaded", configurarSubida);
